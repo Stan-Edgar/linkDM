@@ -1,0 +1,59 @@
+# LinkDM — llms.txt
+
+## Project Summary
+
+LinkDM is a minimal cold outreach automation tool built with React + Vite (frontend) and Node.js + Express (backend). It integrates with Google Sheets via a service account to log leads automatically.
+
+## Purpose
+
+To eliminate repetitive manual steps in a cold DM outreach workflow:
+- Manually copying lead names and links into a CRM
+- Manually copying and personalising a DM template each time
+
+## Core Flow
+
+1. User pastes a Twitter/X profile URL into the input field
+2. Username is parsed from the URL and pre-filled as the name (user can edit)
+3. On submit, the backend appends a new row to the Google Sheet (Name, Profile Link, Date)
+4. The DM template is personalised with the name and copied to clipboard
+5. User pastes directly into Twitter DMs
+
+## File Structure
+
+- `cold-dm-tool/src/App.jsx` — entire frontend UI and logic
+- `cold-dm-backend/server.js` — Express server with single POST route `/add-lead`
+- `cold-dm-backend/service-account.json` — Google service account credentials (gitignored)
+
+## Google Sheets Integration
+
+- Uses `googleapis` npm package with a service account for auth
+- Sheet ID is hardcoded in `server.js`
+- Tab name is auto-detected from the current month using `new Date().toLocaleString('en-US', { month: 'short' })`
+- Appends rows starting from row 13 downward in columns B (Name), C (Profile Link), D (Date)
+
+## Key Implementation Details
+
+- Tab auto-detection: `const TAB_NAME = new Date().toLocaleString('en-US', { month: 'short' });`
+- Next empty row logic: reads column B from row 13, appends at `13 + rows.length`
+- Date format: MM/DD/YYYY via `toLocaleDateString`
+- DM template placeholder: `[First Name]` replaced via `String.replace()`
+- Clipboard: native `navigator.clipboard.writeText()`
+- Frontend runs on port 5173 (Vite default), backend on port 3001
+- Both started together via `concurrently` with `npm run dev:full`
+
+## What to avoid
+
+- Do not add authentication — this is a local personal tool
+- Do not store leads in a local database — Google Sheets is the source of truth
+- Do not over-engineer the Twitter parsing — username is extracted from URL path only, no API calls
+
+## DM Template
+
+```
+Hey [First Name], quick Q. Are you still focused on scaling this year?
+```
+
+## Dependencies
+
+Frontend: react, vite, tailwindcss v4, @tailwindcss/vite, axios, concurrently
+Backend: express, cors, dotenv, googleapis

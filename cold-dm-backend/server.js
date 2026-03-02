@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 const SHEET_ID = '10BnWT37lWVjWHegtZYKPC-yANaTitWSLXqoZYihQLtg';
-const TAB_NAME = 'Feb';
+const TAB_NAME = new Date().toLocaleString('en-US', { month: 'short' });
 
 async function getSheets() {
   const auth = new google.auth.GoogleAuth({
