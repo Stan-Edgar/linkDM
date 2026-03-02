@@ -32,24 +32,28 @@ export default function App() {
     setLoading(true);
     setStatus(null);
 
+    // Optimistic — copy DM and reset form immediately
+    const dm = DM_TEMPLATE.replace("[First Name]", name);
+    await navigator.clipboard.writeText(dm);
+    setCopied(true);
+    setStatus("success");
+    const submittedUrl = url;
+    const submittedName = name;
+    setUrl("");
+    setName("");
+    setLoading(false);
+
+    // Sheet update happens in background
     try {
       await axios.post("http://localhost:3001/add-lead", {
-        name,
-        profileLink: url,
+        name: submittedName,
+        profileLink: submittedUrl,
       });
-
-      const dm = DM_TEMPLATE.replace("[First Name]", name);
-      await navigator.clipboard.writeText(dm);
-      setCopied(true);
-      setStatus("success");
-      setUrl("");
-      setName("");
-      setTimeout(() => setCopied(false), 3000);
     } catch (err) {
       setStatus("error");
-    } finally {
-      setLoading(false);
     }
+
+    setTimeout(() => setCopied(false), 3000);
   }
 
   return (
