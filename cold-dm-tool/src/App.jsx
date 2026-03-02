@@ -27,19 +27,21 @@ export default function App() {
     if (username) setName(username);
   }
 
-  function formatName(raw) {
-  return raw
-    .split(" ")[0]
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-  }
 
   async function handleSubmit() {
     if (!url || !name) return;
     setLoading(true);
     setStatus(null);
 
+    const formatted = name
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+    const firstName = formatted.split(" ")[0];
+
     // Optimistic — copy DM and reset form immediately
-    const dm = DM_TEMPLATE.replace("[First Name]", formatName(name));
+    const dm = DM_TEMPLATE.replace("[First Name]", firstName);
     await navigator.clipboard.writeText(dm);
     setCopied(true);
     setStatus("success");
@@ -52,7 +54,7 @@ export default function App() {
     // Sheet update happens in background
     try {
       await axios.post("http://localhost:3001/add-lead", {
-      name: formatName(name),
+      name: formatted,
       profileLink: submittedUrl,
     });
     } catch (err) {
