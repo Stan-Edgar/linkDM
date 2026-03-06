@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { useState, useRef } from "react";
 
 const DM_TEMPLATE = "Hey [First Name], quick Q. Are you still focused on scaling this year?";
+const urlInputRef = useRef(null);
 
 function extractUsername(url) {
   try {
@@ -50,6 +52,7 @@ export default function App() {
     setUrl("");
     setName("");
     setLoading(false);
+    setTimeout(() => urlInputRef.current?.focus(), 50);
 
     // Sheet update happens in background
     try {
@@ -81,6 +84,7 @@ export default function App() {
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Twitter URL</label>
             <input
+              ref={urlInputRef}
               type="text"
               value={url}
               onChange={handleUrlChange}
