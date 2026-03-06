@@ -1,9 +1,8 @@
-import { useState } from "react";
-import axios from "axios";
 import { useState, useRef } from "react";
+import axios from "axios";
+
 
 const DM_TEMPLATE = "Hey [First Name], quick Q. Are you still focused on scaling this year?";
-const urlInputRef = useRef(null);
 
 function extractUsername(url) {
   try {
@@ -21,6 +20,7 @@ export default function App() {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const urlInputRef = useRef(null);
 
   function handleUrlChange(e) {
     const val = e.target.value;
