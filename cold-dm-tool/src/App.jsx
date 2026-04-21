@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 
 
-const DM_TEMPLATE = "Hey [First Name], how's raising going at the moment?";
+const DM_TEMPLATE = "Hey [First Name], how's raising capital going at the moment?";
 
 function extractUsername(url) {
   try {
@@ -110,7 +110,7 @@ export default function App() {
           <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Preview</p>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Hey <span className="font-semibold text-black">{name || "First Name"}</span>, quick Q. Are you still focused on scaling this year?
+              Hey <span className="font-semibold text-black">{name || "First Name"}</span>, how's raising capital going at the moment?
             </p>
           </div>
 
