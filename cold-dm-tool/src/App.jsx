@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 
 
-const DM_TEMPLATE = "Hey [First Name], how's [PAINFUL PROBLEM] going at the moment?";
+const DM_TEMPLATE = "Hey [First Name], how's raising going at the moment?";
 
 function extractUsername(url) {
   try {
